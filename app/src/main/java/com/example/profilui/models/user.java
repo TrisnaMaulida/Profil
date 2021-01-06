@@ -2,9 +2,11 @@ package com.example.profilui.models;
 
 public class user {
     private String nama, tempatlahir, tgllahir, nohp, nik, nokk, email, gender, foto;
-    public user () {
+
+    public user() {
     }
-    public user (String nama, String tempatlahir, String tgllahir, String nohp, String nik, String nokk, String email, String gender, String foto) {
+
+    public user(String nama, String tempatlahir, String tgllahir, String nohp, String nik, String nokk, String email, String gender, String foto) {
         this.nama = nama;
         this.tempatlahir = tempatlahir;
         this.tgllahir = tgllahir;
@@ -87,4 +89,6 @@ public class user {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
+
 }

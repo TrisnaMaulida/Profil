@@ -3,6 +3,7 @@ package com.example.profilui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class ActivityEditProfil extends AppCompatActivity {
     EditText nama, tempatlahir, tanggallahir, nohp, nik, nokk, email, gender;
     Button simpan, batal;
     ImageView fotoprofil;
+    private ProgressDialog loading;
 
     private Uri filePath;
     private String fotoUrl;
@@ -85,13 +87,42 @@ public class ActivityEditProfil extends AppCompatActivity {
                 user.setNik(nik.getText().toString());
                 user.setNokk(nokk.getText().toString());
                 user.setEmail(email.getText().toString());
-                user.setGender(gender.getText().toString());
                 user.setFoto(fotoUrl);
 
-               dbref.child("USER").push().setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                if (nama.equals("")) {
+                    nama.setError("Silahkan masukan nama");
+                    nama.requestFocus();
+                } else if (tempatlahir.equals("")) {
+                    tempatlahir.setError("Silahkan masukan tempat lahir");
+                    tempatlahir.requestFocus();
+                } else if (tanggallahir.equals("")) {
+                    tanggallahir.setError("Silahkan masukan tanggal lahir");
+                    tanggallahir.requestFocus();
+                } else if (nohp.equals("")) {
+                    nohp.setError("Silahkan masukan nomor handphone");
+                    nohp.requestFocus();
+                } else if (nik.equals("")) {
+                    nik.setError("Silahkan masukan NIK");
+                    nik.requestFocus();
+                } else if (nokk.equals("")) {
+                    nokk.setError("Silahkan masukan No KK");
+                    nokk.requestFocus();
+                } else if (email.equals("")) {
+                    email.setError("Silahkan masukan email");
+                    email.requestFocus();
+                }
+
+
+                dbref.child("USER").push().setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
+                    public void onSuccess(Void Void) {
                         nama.setText("");
+                        tempatlahir.setText("");
+                        tanggallahir.setText("");
+                        nohp.setText("");
+                        nik.setText("");
+                        nokk.setText("");
+                        email.setText("");
                         Toast.makeText(ActivityEditProfil.this, "Data Berhasil Disimpan", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
