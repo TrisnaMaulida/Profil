@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ActivityEditProfil">
+
+    <RelativeLayout
+        android:id="@+id/relative1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:padding="30dp"
+        android:background="@drawable/bg_tumpul"
+        tools:ignore="NotSibling">
+
+
+        <ImageView
+            android:id="@+id/imageprofil"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/ic_launcher_background"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/imageprofil"
+            android:text="Trisna Maulida"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_centerVertical="true"
+            android:textColor="#090909"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_below="@id/name"
+            android:layout_toRightOf="@id/imageprofil"
+            android:text="3302789329472"
+            android:textColor="#090909"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/txt_nama"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@id/relative1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nama Lengkap"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="15sp"/>
+
+    <EditText
+        android:id="@+id/edit_nama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_nama"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp"
+        android:layout_marginEnd="10dp" />
+
+    <TextView
+        android:id="@+id/txt_tempatlahir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_nama"
+        android:layout_marginTop="1dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Tempat Lahir" />
+
+    <EditText
+        android:id="@+id/edit_tempatlahir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_tempatlahir"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp"
+        android:layout_marginEnd="10dp" />
+
+    <TextView
+        android:id="@+id/txt_tgllahir"
+        android:layout_below="@+id/edit_tempatlahir"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tanggal Lahir"/>
+    <EditText
+        android:id="@+id/edit_tgllahir"
+        android:layout_below="@id/txt_tgllahir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp" />
+    <TextView
+        android:id="@+id/txt_nohp"
+        android:layout_below="@+id/edit_tgllahir"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Handphone"/>
+    <EditText
+        android:id="@+id/edit_nohp"
+        android:layout_below="@id/txt_nohp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp" />
+    <TextView
+        android:id="@+id/txt_nik"
+        android:layout_below="@+id/edit_nohp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NIK"/>
+    <EditText
+        android:id="@+id/edit_nik"
+        android:layout_below="@id/txt_nik"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp" />
+    <TextView
+        android:id="@+id/txt_nokk"
+        android:layout_below="@+id/edit_nik"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Kartu Keluarga"/>
+    <EditText
+        android:id="@+id/edit_nokk"
+        android:layout_below="@id/txt_nokk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp" />
+    <TextView
+        android:id="@+id/txt_email"
+        android:layout_below="@+id/edit_nokk"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email"/>
+    <EditText
+        android:id="@+id/edit_email"
+        android:layout_below="@id/txt_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp" />
+
+    <TextView
+        android:id="@+id/txt_gender"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Jenis kelamin"
+        android:layout_below="@id/edit_email"
+        android:textSize="15sp" />
+    <RadioGroup
+        android:id="@+id/rg_gender"
+        android:layout_below="@+id/txt_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/rb_lk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LAKI-LAKI"/>
+        <RadioButton
+            android:id="@+id/rb_pr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PEREMPUAN"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_simpan_profil"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="54dp"
+        android:background="@drawable/btn_tumpul_keluar_ubahpass"
+        android:text="Simpan"
+        android:textColor="#090909">
+
+    </Button>
+
+    <Button
+        android:id="@+id/btn_batal_profil"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="7dp"
+        android:background="@drawable/btn_tumpul_keluar_ubahpass"
+        android:text="Batal"
+        android:textColor="#090909">
+
+    </Button>
+
+</RelativeLayout>

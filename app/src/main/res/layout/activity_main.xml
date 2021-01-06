@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/relative1"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="30dp"
+        android:background="@drawable/bg_tumpul"
+        tools:ignore="NotSibling">
+
+        <ImageView
+            android:id="@+id/imageprofil"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/ic_launcher_background"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/imageprofil"
+            android:text="Trisna Maulida"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_centerVertical="true"
+            android:textColor="#090909"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_below="@id/name"
+            android:layout_toRightOf="@id/imageprofil"
+            android:text="NIK 3302789329472"
+            android:textColor="#090909"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/btn_edit_profil"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/status"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="100dp"
+            android:background="@drawable/btn_tumpul_keluar_ubahpass"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:onClick="EditProfil"
+            android:text="Edit Profil"
+            android:textSize="10sp"
+            tools:ignore="OnClick">
+        </Button>
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/txtnama"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@id/relative1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nama Lengkap"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="15sp"/>
+
+    <EditText
+        android:id="@+id/et_nama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtnama"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp"
+        android:layout_marginEnd="10dp" />
+
+    <TextView
+        android:id="@+id/txttempatlahir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_nama"
+        android:layout_marginTop="1dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Tempat Lahir"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="15sp"/>
+
+    <EditText
+        android:id="@+id/et_tempatlahir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txttempatlahir"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp"
+        android:layout_marginEnd="10dp" />
+
+    <TextView
+        android:id="@+id/txttgllahir"
+        android:layout_below="@+id/et_tempatlahir"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tanggal Lahir"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="15sp"/>
+    <EditText
+        android:id="@+id/et_tgllahir"
+        android:layout_below="@id/txttgllahir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp" />
+    <TextView
+        android:id="@+id/txtnohp"
+        android:layout_below="@+id/et_tgllahir"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Handphone"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="15sp"/>
+    <EditText
+        android:id="@+id/et_nohp"
+        android:layout_below="@id/txtnohp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp" />
+    <TextView
+        android:id="@+id/txtnik"
+        android:layout_below="@+id/et_nohp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NIK"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="15sp"/>
+    <EditText
+        android:id="@+id/et_nik"
+        android:layout_below="@id/txtnik"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp" />
+    <TextView
+        android:id="@+id/txtnokk"
+        android:layout_below="@+id/et_nik"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Kartu Keluarga"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="15sp"/>
+    <EditText
+        android:id="@+id/et_nokk"
+        android:layout_below="@id/txtnokk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp" />
+    <TextView
+        android:id="@+id/txtemail"
+        android:layout_below="@+id/et_nokk"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="15sp"/>
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_below="@id/txtemail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp" />
+
+    <TextView
+        android:id="@+id/txtgender"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Jenis kelamin"
+        android:layout_below="@id/et_email"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="15sp"/>
+    <EditText
+        android:id="@+id/et_gender"
+        android:layout_below="@id/txtgender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-14dp" />
+
+    <Button
+        android:id="@+id/btn_ubah_pass"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="54dp"
+        android:background="@drawable/btn_tumpul_keluar_ubahpass"
+        android:text="Ubah Password"
+        android:textColor="#090909">
+
+
+    </Button>
+
+    <Button
+        android:id="@+id/btn_keluar"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="7dp"
+        android:background="@drawable/btn_tumpul_keluar_ubahpass"
+        android:text="Keluar"
+        android:textColor="#090909">
+
+    </Button>
+
+
+
+</RelativeLayout>
