@@ -15,21 +15,21 @@
         android:background="@drawable/bg_tumpul"
         tools:ignore="NotSibling">
 
-        <ImageView
-            android:id="@+id/imageprofil"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_profil"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/ic_launcher_background"/>
+            android:src="@drawable/profile_image"/>
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/imageprofil"
+            android:layout_toRightOf="@id/image_profil"
             android:text="Trisna Maulida"
             android:layout_centerInParent="true"
             android:fontFamily="sans-serif-condensed-medium"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
             android:layout_below="@id/name"
-            android:layout_toRightOf="@id/imageprofil"
+            android:layout_toRightOf="@id/image_profil"
             android:text="NIK 3302789329472"
             android:textColor="#090909"
             android:textSize="14sp"/>

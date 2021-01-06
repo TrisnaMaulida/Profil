@@ -2,12 +2,10 @@ package com.example.profilui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +19,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends Activity {
 
     private FirebaseFirestore firebaseFirestore;
@@ -28,12 +28,21 @@ public class MainActivity extends Activity {
     TextView txtnama, txtstatus;
     EditText etnama, ettempatlahir, ettgllahir, etnohp, etnik, etnokk, etemail, etjk;
     Button ubahpass, keluar, editprofil;
+    CircleImageView fotoprofile;
+    private String imageUri;
+    private static final int IMAGE_REQUEST = 1;
+
+    public MainActivity(FirebaseFirestore firebaseFirestore, StorageReference storageReference) {
+        this.firebaseFirestore = firebaseFirestore;
+        this.storageReference = storageReference;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fotoprofile = findViewById(R.id.image_profil);
         txtnama = findViewById(R.id.name);
         txtstatus = findViewById(R.id.status);
         etnama = findViewById(R.id.et_nama);
@@ -47,6 +56,7 @@ public class MainActivity extends Activity {
         ubahpass = findViewById(R.id.btn_ubah_pass);
         keluar = findViewById(R.id.btn_keluar);
         editprofil = findViewById(R.id.btn_edit_profil);
+        readData();
 
         ubahpass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +73,36 @@ public class MainActivity extends Activity {
             }
         });
     }
-}
+
+    private void readData() {
+        firebaseFirestore.collection("USER")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        etnama.setText(document.getString("nama"));
+                        ettempatlahir.setText(document.getString("tempatlahir"));
+                        ettgllahir.setText(document.getString("tgllahir"));
+                        etnohp.setText(document.getString("nohp"));
+                        etnik.setText(document.getString("nik"));
+                        etnokk.setText(document.getString("nokk"));
+                        etemail.setText(document.getString("email"));
+                         imageUri = document.getString("foto");
+                        if (imageUri != ""){
+                            Picasso.get().load(imageUri).fit().into(fotoprofile);
+                        }else{
+                            Picasso.get().load(R.drawable.profile_image).fit().into(fotoprofile);
+                        }
+                    }
+                }else{
+                    Toast.makeText(MainActivity.this, "Error getting documents",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    }
 
 
 

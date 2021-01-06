@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
@@ -34,18 +35,20 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ActivityEditProfil extends AppCompatActivity {
     public DatabaseReference dbref= FirebaseDatabase.getInstance().getReference("/USER");
     private FirebaseFirestore firebaseFirestore;
     private StorageReference storageReference;
 
-    EditText nama, tempatlahir, tanggallahir, nohp, nik, nokk, email, gender;
-    Button simpan, batal;
-    ImageView fotoprofil;
-    private ProgressDialog loading;
+    private EditText nama, tempatlahir, tanggallahir, nohp, nik, nokk, email, gender;
+    private Button simpan, batal;
+    private CircleImageView fotoprofil;
 
-    private Uri filePath;
-    private String fotoUrl;
+    private Uri imageUri;
+    private String myUri = "";
+
 
     private static final int IMAGE_REQUEST = 1;
 
@@ -87,7 +90,7 @@ public class ActivityEditProfil extends AppCompatActivity {
                 user.setNik(nik.getText().toString());
                 user.setNokk(nokk.getText().toString());
                 user.setEmail(email.getText().toString());
-                user.setFoto(fotoUrl);
+                user.setFoto(myUri);
 
                 if (nama.equals("")) {
                     nama.setError("Silahkan masukan nama");
@@ -154,17 +157,17 @@ public class ActivityEditProfil extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null &&
                 data.getData() != null) {
-            filePath = data.getData();
-            Picasso.get().load(filePath).fit().centerInside().into(fotoprofil);
+            imageUri = data.getData();
+            Picasso.get().load(imageUri).fit().centerInside().into(fotoprofil);
         } else {
             Toast.makeText(this, "Tidak ada gambar dipilih", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void uploadImage() {
-        if (filePath != null) {
-            final StorageReference ref = storageReference.child(nama.getText().toString());
-            UploadTask uploadTask = ref.putFile(filePath);
+        if (imageUri != null) {
+            final StorageReference ref = storageReference.child("user"+firebaseFirestore.toString());
+            UploadTask uploadTask = ref.putFile(imageUri);
 
             Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
@@ -173,7 +176,7 @@ public class ActivityEditProfil extends AppCompatActivity {
                 }
             }).addOnCompleteListener(task -> {
                 Uri imagePath = task.getResult();
-                fotoUrl = imagePath.toString();
+                myUri = imagePath.toString();
             });
         }
     }
