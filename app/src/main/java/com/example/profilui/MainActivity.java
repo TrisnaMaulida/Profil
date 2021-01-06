@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -23,6 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends Activity {
 
+    public DatabaseReference dbref= FirebaseDatabase.getInstance().getReference("/USER");
     private FirebaseFirestore firebaseFirestore;
     private StorageReference storageReference;
     TextView txtnama, txtstatus;
@@ -31,11 +34,6 @@ public class MainActivity extends Activity {
     CircleImageView fotoprofile;
     private String imageUri;
     private static final int IMAGE_REQUEST = 1;
-
-    public MainActivity(FirebaseFirestore firebaseFirestore, StorageReference storageReference) {
-        this.firebaseFirestore = firebaseFirestore;
-        this.storageReference = storageReference;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
