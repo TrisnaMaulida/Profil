@@ -3,6 +3,7 @@ package com.example.profilui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
@@ -34,17 +36,24 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ActivityEditProfil extends AppCompatActivity {
     public DatabaseReference dbref= FirebaseDatabase.getInstance().getReference("/USER");
     private StorageReference storageReference;
 
-    EditText nama, tempatlahir, tanggallahir, nohp, nik, nokk, email, gender;
-    Button simpan, batal;
-    ImageView fotoprofil;
+    private EditText nama, tempatlahir, tanggallahir, nohp, nik, nokk, email, gender;
+    private Button simpan, batal;
+    private CircleImageView fotoprofil;
+
+    private Uri imageUri;
+    private String myUri = "";
+
 
     private Uri filePath;
     private String fotoUrl;
     private boolean uploadSuccess;
+
 
     private static final int IMAGE_REQUEST = 1;
 
@@ -72,9 +81,64 @@ public class ActivityEditProfil extends AppCompatActivity {
             if(checkEditText()){
                 uploadImage();
 
+
             }else {
                 //jika kosong
                 Toast.makeText(ActivityEditProfil.this,"Tidak boleh kososng!",Toast.LENGTH_LONG).show();
+
+                user user = new user();
+                user.setNama(nama.getText().toString());
+                user.setNohp(nohp.getText().toString());
+                user.setTempatlahir(tempatlahir.getText().toString());
+                user.setTgllahir(tanggallahir.getText().toString());
+                user.setNik(nik.getText().toString());
+                user.setNokk(nokk.getText().toString());
+                user.setEmail(email.getText().toString());
+                user.setFoto(myUri);
+
+                if (nama.equals("")) {
+                    nama.setError("Silahkan masukan nama");
+                    nama.requestFocus();
+                } else if (tempatlahir.equals("")) {
+                    tempatlahir.setError("Silahkan masukan tempat lahir");
+                    tempatlahir.requestFocus();
+                } else if (tanggallahir.equals("")) {
+                    tanggallahir.setError("Silahkan masukan tanggal lahir");
+                    tanggallahir.requestFocus();
+                } else if (nohp.equals("")) {
+                    nohp.setError("Silahkan masukan nomor handphone");
+                    nohp.requestFocus();
+                } else if (nik.equals("")) {
+                    nik.setError("Silahkan masukan NIK");
+                    nik.requestFocus();
+                } else if (nokk.equals("")) {
+                    nokk.setError("Silahkan masukan No KK");
+                    nokk.requestFocus();
+                } else if (email.equals("")) {
+                    email.setError("Silahkan masukan email");
+                    email.requestFocus();
+                }
+
+
+                dbref.child("USER").push().setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void Void) {
+                        nama.setText("");
+                        tempatlahir.setText("");
+                        tanggallahir.setText("");
+                        nohp.setText("");
+                        nik.setText("");
+                        nokk.setText("");
+                        email.setText("");
+                        Toast.makeText(ActivityEditProfil.this, "Data Berhasil Disimpan", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ActivityEditProfil.this, "Data Gagal Disimpan", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
         batal.setOnClickListener(view -> {
@@ -111,23 +175,35 @@ public class ActivityEditProfil extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null &&
                 data.getData() != null) {
-            filePath = data.getData();
-            Picasso.get().load(filePath).fit().centerInside().into(fotoprofil);
+            imageUri = data.getData();
+            Picasso.get().load(imageUri).fit().centerInside().into(fotoprofil);
         } else {
             Toast.makeText(this, "Tidak ada gambar dipilih", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void uploadImage() {
-        if (filePath != null) {
-            final StorageReference ref = storageReference.child(nama.getText().toString());
-            UploadTask uploadTask = ref.putFile(filePath);
+        if (imageUri != null) {
+            final StorageReference ref = storageReference.child("user"+firebaseFirestore.toString());
+            UploadTask uploadTask = ref.putFile(imageUri);
+
 
             Task<Uri> uriTask = uploadTask.continueWithTask(task -> ref.getDownloadUrl()).addOnCompleteListener(task -> {
 
             }).addOnSuccessListener(uri -> uploadDataUser(uri.toString()));
         }else {
             Toast.makeText(ActivityEditProfil.this,"Pilih Gambar dulu",Toast.LENGTH_LONG).show();
+
+            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    return ref.getDownloadUrl();
+                }
+            }).addOnCompleteListener(task -> {
+                Uri imagePath = task.getResult();
+                myUri = imagePath.toString();
+            });
+
         }
     }
 
