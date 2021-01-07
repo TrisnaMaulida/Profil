@@ -49,10 +49,7 @@ public class ActivityEditProfil extends AppCompatActivity {
     private Uri imageUri;
     private String myUri = "";
 
-
-    private Uri filePath;
-    private String fotoUrl;
-    private boolean uploadSuccess;
+    private String idUser;
 
 
     private static final int IMAGE_REQUEST = 1;
@@ -74,70 +71,15 @@ public class ActivityEditProfil extends AppCompatActivity {
         batal = findViewById(R.id.btn_batal_profil);
 
         storageReference = FirebaseStorage.getInstance().getReference();
-
+        idUser = dbref.push().getKey();
         fotoprofil.setOnClickListener(view -> ambilGambar());
         simpan.setOnClickListener(view -> {
             //cek
             if(checkEditText()){
                 uploadImage();
-
-
             }else {
                 //jika kosong
                 Toast.makeText(ActivityEditProfil.this,"Tidak boleh kososng!",Toast.LENGTH_LONG).show();
-
-                user user = new user();
-                user.setNama(nama.getText().toString());
-                user.setNohp(nohp.getText().toString());
-                user.setTempatlahir(tempatlahir.getText().toString());
-                user.setTgllahir(tanggallahir.getText().toString());
-                user.setNik(nik.getText().toString());
-                user.setNokk(nokk.getText().toString());
-                user.setEmail(email.getText().toString());
-                user.setFoto(myUri);
-
-                if (nama.equals("")) {
-                    nama.setError("Silahkan masukan nama");
-                    nama.requestFocus();
-                } else if (tempatlahir.equals("")) {
-                    tempatlahir.setError("Silahkan masukan tempat lahir");
-                    tempatlahir.requestFocus();
-                } else if (tanggallahir.equals("")) {
-                    tanggallahir.setError("Silahkan masukan tanggal lahir");
-                    tanggallahir.requestFocus();
-                } else if (nohp.equals("")) {
-                    nohp.setError("Silahkan masukan nomor handphone");
-                    nohp.requestFocus();
-                } else if (nik.equals("")) {
-                    nik.setError("Silahkan masukan NIK");
-                    nik.requestFocus();
-                } else if (nokk.equals("")) {
-                    nokk.setError("Silahkan masukan No KK");
-                    nokk.requestFocus();
-                } else if (email.equals("")) {
-                    email.setError("Silahkan masukan email");
-                    email.requestFocus();
-                }
-
-
-                dbref.child("USER").push().setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void Void) {
-                        nama.setText("");
-                        tempatlahir.setText("");
-                        tanggallahir.setText("");
-                        nohp.setText("");
-                        nik.setText("");
-                        nokk.setText("");
-                        email.setText("");
-                        Toast.makeText(ActivityEditProfil.this, "Data Berhasil Disimpan", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ActivityEditProfil.this, "Data Gagal Disimpan", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
             }
         });
@@ -160,7 +102,7 @@ public class ActivityEditProfil extends AppCompatActivity {
                 !TextUtils.isEmpty(nokk.getText().toString()) &&
                 !TextUtils.isEmpty(email.getText().toString()) &&
                 !TextUtils.isEmpty(gender.getText().toString()) &&
-                !TextUtils.isEmpty(fotoUrl);
+                !TextUtils.isEmpty(imageUri.toString());
     }
 
 
@@ -184,26 +126,14 @@ public class ActivityEditProfil extends AppCompatActivity {
 
     private void uploadImage() {
         if (imageUri != null) {
-            final StorageReference ref = storageReference.child("user"+firebaseFirestore.toString());
+            final StorageReference ref = storageReference.child("USER").child(idUser);
             UploadTask uploadTask = ref.putFile(imageUri);
-
 
             Task<Uri> uriTask = uploadTask.continueWithTask(task -> ref.getDownloadUrl()).addOnCompleteListener(task -> {
 
             }).addOnSuccessListener(uri -> uploadDataUser(uri.toString()));
         }else {
             Toast.makeText(ActivityEditProfil.this,"Pilih Gambar dulu",Toast.LENGTH_LONG).show();
-
-            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    return ref.getDownloadUrl();
-                }
-            }).addOnCompleteListener(task -> {
-                Uri imagePath = task.getResult();
-                myUri = imagePath.toString();
-            });
-
         }
     }
 
@@ -223,9 +153,9 @@ public class ActivityEditProfil extends AppCompatActivity {
         user.setNokk(nokk.getText().toString());
         user.setEmail(email.getText().toString());
         user.setGender(gender.getText().toString());
-        user.setFoto(fotoUrl);
+        user.setFoto(imagepath);
 
-        dbref.child("USER").push().setValue(user).addOnSuccessListener(aVoid -> {
+        dbref.child("USER").child(idUser).setValue(user).addOnSuccessListener(aVoid -> {
             nama.setText("");
             Toast.makeText(ActivityEditProfil.this, "Data Berhasil Disimpan", Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(new OnFailureListener() {
