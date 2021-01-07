@@ -126,7 +126,7 @@ public class ActivityEditProfil extends AppCompatActivity {
 
     private void uploadImage() {
         if (imageUri != null) {
-            final StorageReference ref = storageReference.child("USER").child(idUser);
+            final StorageReference ref = storageReference.child("USER/"+idUser+".jpg");
             UploadTask uploadTask = ref.putFile(imageUri);
 
             Task<Uri> uriTask = uploadTask.continueWithTask(task -> ref.getDownloadUrl()).addOnCompleteListener(task -> {
