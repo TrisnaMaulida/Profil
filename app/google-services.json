@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "900551229627-ntikdavhf1u70hrmvl312msprd0aakah.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pertemuan9trisna",
+            "certificate_hash": "c39b1ffaf45c87aa7076a425fdc410223808d9e1"
+          }
+        },
+        {
           "client_id": "900551229627-6k19kfnmnlt0fe5g81273ahfr8n2u4o4.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -45,12 +53,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:900551229627:android:b913ae3590e7fe370b299e",
+        "mobilesdk_app_id": "1:900551229627:android:5fc2c39641d193ac0b299e",
         "android_client_info": {
           "package_name": "com.example.profilui"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "900551229627-thesj2mav1p1dt2tgf6qrnerodi1uqj0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.profilui",
+            "certificate_hash": "c39b1ffaf45c87aa7076a425fdc410223808d9e1"
+          }
+        },
         {
           "client_id": "900551229627-6k19kfnmnlt0fe5g81273ahfr8n2u4o4.apps.googleusercontent.com",
           "client_type": 3
