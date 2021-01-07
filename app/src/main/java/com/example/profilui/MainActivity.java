@@ -3,7 +3,6 @@ package com.example.profilui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,23 +10,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.profilui.models.user;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends Activity {
 
-    public DatabaseReference dbref= FirebaseDatabase.getInstance().getReference("/USER");
-    private FirebaseFirestore firebaseFirestore;
-    private StorageReference storageReference;
+    public DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
+
     TextView txtnama, txtstatus;
     EditText etnama, ettempatlahir, ettgllahir, etnohp, etnik, etnokk, etemail, etjk;
     Button ubahpass, keluar, editprofil;
@@ -56,51 +52,57 @@ public class MainActivity extends Activity {
         editprofil = findViewById(R.id.btn_edit_profil);
         readData();
 
-        ubahpass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, UbahPassword.class);
-                startActivity(intent);
-            }
+        ubahpass.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, UbahPassword.class);
+            startActivity(intent);
         });
-        editprofil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ActivityEditProfil.class);
-                startActivity(intent);
-            }
+
+        editprofil.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, ActivityEditProfil.class);
+            startActivity(intent);
         });
     }
 
+    /**
+     * Ubah Firestore ke realtime database
+     *
+     * @param {}
+     * @return show data
+     */
     private void readData() {
-        firebaseFirestore.collection("USER")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for (QueryDocumentSnapshot document : task.getResult()){
-                        etnama.setText(document.getString("nama"));
-                        ettempatlahir.setText(document.getString("tempatlahir"));
-                        ettgllahir.setText(document.getString("tgllahir"));
-                        etnohp.setText(document.getString("nohp"));
-                        etnik.setText(document.getString("nik"));
-                        etnokk.setText(document.getString("nokk"));
-                        etemail.setText(document.getString("email"));
-                         imageUri = document.getString("foto");
-                        if (imageUri != ""){
-                            Picasso.get().load(imageUri).fit().into(fotoprofile);
-                        }else{
-                            Picasso.get().load(R.drawable.profile_image).fit().into(fotoprofile);
+        dbref.child("USER")
+                .child(Constant.idUser)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            user user = snapshot.getValue(user.class);
+                            assert user != null;
+                            etnama.setText(user.getNama());
+                            ettempatlahir.setText(user.getTempatlahir());
+                            ettgllahir.setText(user.getTgllahir());
+                            etnohp.setText(user.getNohp());
+                            etnik.setText(user.getNik());
+                            etnokk.setText(user.getNokk());
+                            etemail.setText(user.getEmail());
+                            imageUri = user.getFoto();
+                            if (imageUri != "") {
+                                Picasso.get().load(imageUri).fit().into(fotoprofile);
+                            } else {
+                                Picasso.get().load(R.drawable.profile_image).fit().into(fotoprofile);
+                            }
                         }
                     }
-                }else{
-                    Toast.makeText(MainActivity.this, "Error getting documents",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(MainActivity.this, "Gagal mengambil data", Toast.LENGTH_LONG).show();
+                        ;
+                    }
+                });
+
     }
-    }
+}
 
 
 
