@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,7 +36,6 @@ import javax.annotation.Nullable;
 
 public class ActivityEditProfil extends AppCompatActivity {
     public DatabaseReference dbref= FirebaseDatabase.getInstance().getReference("/USER");
-    private FirebaseFirestore firebaseFirestore;
     private StorageReference storageReference;
 
     EditText nama, tempatlahir, tanggallahir, nohp, nik, nokk, email, gender;
@@ -44,6 +44,7 @@ public class ActivityEditProfil extends AppCompatActivity {
 
     private Uri filePath;
     private String fotoUrl;
+    private boolean uploadSuccess;
 
     private static final int IMAGE_REQUEST = 1;
 
@@ -63,52 +64,39 @@ public class ActivityEditProfil extends AppCompatActivity {
         simpan = findViewById(R.id.btn_simpan_profil);
         batal = findViewById(R.id.btn_batal_profil);
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        fotoprofil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ambilGambar();
-            }
-
-        });
-        simpan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fotoprofil.setOnClickListener(view -> ambilGambar());
+        simpan.setOnClickListener(view -> {
+            //cek
+            if(checkEditText()){
                 uploadImage();
-                user user = new user();
-                user.setNama(nama.getText().toString());
-                user.setNohp(nohp.getText().toString());
-                user.setTempatlahir(tempatlahir.getText().toString());
-                user.setTgllahir(tanggallahir.getText().toString());
-                user.setNik(nik.getText().toString());
-                user.setNokk(nokk.getText().toString());
-                user.setEmail(email.getText().toString());
-                user.setGender(gender.getText().toString());
-                user.setFoto(fotoUrl);
 
-               dbref.child("USER").push().setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        nama.setText("");
-                        Toast.makeText(ActivityEditProfil.this, "Data Berhasil Disimpan", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ActivityEditProfil.this, "Data Gagal Disimpan", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            }else {
+                //jika kosong
+                Toast.makeText(ActivityEditProfil.this,"Tidak boleh kososng!",Toast.LENGTH_LONG).show();
             }
         });
-        batal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ActivityEditProfil.this, MainActivity.class);
-                startActivity(intent);
-            }
+        batal.setOnClickListener(view -> {
+            Intent intent = new Intent(ActivityEditProfil.this, MainActivity.class);
+            startActivity(intent);
         });
+    }
+/**
+ * Cek apakah sudah diisi atau belum
+ * @param {}
+ * @return true/false (harusnya semua tidak boleh kosong == true)
+ * */
+    private boolean checkEditText(){
+        return !TextUtils.isEmpty(nama.getText().toString()) &&
+                !TextUtils.isEmpty(nohp.getText().toString()) &&
+                !TextUtils.isEmpty(tempatlahir.getText().toString()) &&
+                !TextUtils.isEmpty(tanggallahir.getText().toString()) &&
+                !TextUtils.isEmpty(nik.getText().toString()) &&
+                !TextUtils.isEmpty(nokk.getText().toString()) &&
+                !TextUtils.isEmpty(email.getText().toString()) &&
+                !TextUtils.isEmpty(gender.getText().toString()) &&
+                !TextUtils.isEmpty(fotoUrl);
     }
 
 
@@ -135,15 +123,40 @@ public class ActivityEditProfil extends AppCompatActivity {
             final StorageReference ref = storageReference.child(nama.getText().toString());
             UploadTask uploadTask = ref.putFile(filePath);
 
-            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    return ref.getDownloadUrl();
-                }
-            }).addOnCompleteListener(task -> {
-                Uri imagePath = task.getResult();
-                fotoUrl = imagePath.toString();
-            });
+            Task<Uri> uriTask = uploadTask.continueWithTask(task -> ref.getDownloadUrl()).addOnCompleteListener(task -> {
+
+            }).addOnSuccessListener(uri -> uploadDataUser(uri.toString()));
+        }else {
+            Toast.makeText(ActivityEditProfil.this,"Pilih Gambar dulu",Toast.LENGTH_LONG).show();
         }
+    }
+
+/**
+ * upload to database
+ * @param imagepath
+ *
+ *
+ * */
+    private void uploadDataUser(String imagepath){
+        user user = new user();
+        user.setNama(nama.getText().toString());
+        user.setNohp(nohp.getText().toString());
+        user.setTempatlahir(tempatlahir.getText().toString());
+        user.setTgllahir(tanggallahir.getText().toString());
+        user.setNik(nik.getText().toString());
+        user.setNokk(nokk.getText().toString());
+        user.setEmail(email.getText().toString());
+        user.setGender(gender.getText().toString());
+        user.setFoto(fotoUrl);
+
+        dbref.child("USER").push().setValue(user).addOnSuccessListener(aVoid -> {
+            nama.setText("");
+            Toast.makeText(ActivityEditProfil.this, "Data Berhasil Disimpan", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ActivityEditProfil.this, "Data Gagal Disimpan", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
