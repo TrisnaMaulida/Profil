@@ -86,6 +86,7 @@ public class MainActivity extends Activity {
                             etnokk.setText(user.getNokk());
                             etemail.setText(user.getEmail());
                             imageUri = user.getFoto();
+                            etjk.setText(user.getGender());
                             if (imageUri != "") {
                                 Picasso.get().load(imageUri).fit().into(fotoprofile);
                             } else {
