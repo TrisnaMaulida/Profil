@@ -120,10 +120,18 @@ app
 
 ## Struktur database
 
-| USER     | PENGUMUMAN |
-| -------- | :--------: |
-| left foo | right foo  |
-| left bar | right bar  |
+| USER      | PENGUMUMAN |    KAS      | PENGADUAN |
+| --------  | :--------: | :---------: |:---------:|
+| uid       | id         |id           | id        |
+| username  | judul      |tipe         | judul     |  
+| nama      | isi        |kategori     | isi       |
+| email     |            |keterangan   | komentar  |
+| password  |            |jumlah       | foto      |
+| nik       |            |tanggal      | iduser    |
+| kk        |            |             |           |
+| jk        |            |             |           |
+| jabatan   |            |             |           |
+(ADMIN/USER)
 
 Di Realtime database akan terlihat seperti ini:
 
